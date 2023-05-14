@@ -3,10 +3,15 @@ package com.prorental.carrentalservice.service;
 import com.prorental.carrentalservice.domain.Message;
 import com.prorental.carrentalservice.exception.ResourceNotFoundException;
 import com.prorental.carrentalservice.repository.MessageRepository;
+
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpServerErrorException;
 
+import java.util.List;
 
+@Transactional
 @AllArgsConstructor
 @Service
 public class MessageService {
@@ -21,4 +26,22 @@ public Message getMessage(Long id){
     Message foundMessage = messageRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("There is no message with such id: "+id));
     return foundMessage;
 }
+
+    public List<Message> getAllMessages() {
+    List<Message> allMessages=messageRepository.findAll();
+    return allMessages;
+    }
+
+
+    public void deleteMessage(Long id) throws ResourceNotFoundException {
+    messageRepository.deleteById(id);
+    }
+
+
+    public Message updateMessage(Long id, Message message) throws HttpServerErrorException.InternalServerError {
+        Message foundMessage= getMessage(id);
+        foundMessage.setSubject(message.getSubject());
+        foundMessage.setBody(message.getBody());
+        return messageRepository.save(message);
+    }
 }
