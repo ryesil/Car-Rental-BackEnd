@@ -57,6 +57,14 @@
 #      max-file-size: 2MB
 #      max-request-size: 2MB
 
+server:
+  port: 8080
+  error:
+    include-stacktrace: never
+  servlet:
+    context-path: /car-rental/api
+
+
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/prorent_db
@@ -73,14 +81,18 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format-sql: true
     database-platform: org.hibernate.dialect.PostgreSQLDialect # we are adding this to tell other platforms to use postgre
+
 #  security:
 #    user:
 #      name: postgres
 #      password: postgres
-
-server:
-  port: 8080
-  error:
-    include-stacktrace: never
-  servlet:
-    context-path: /car-rental/api
+logging:
+  file:
+    name: logs/prorent.log # We are gonna log everything
+  pattern:
+    file: "%d %-5level [%thread] %logger:%msg%n"
+    level:
+      org.springframework.web: DEBUG # We will log if we run in the debug mode.
+      com.prorental: DEBUG
+      org.hibernate.SQL: DEBUG
+      org.hibernate.type.descriptor.sql.BasicBinder: TRACE
