@@ -68,8 +68,8 @@ server:
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/prorent_db
-    username: admin
-    password: admin
+    username: postgres
+    password: postgres
     driver-class-name: org.postgresql.Driver
   jpa:
     show-sql: true
@@ -95,4 +95,5 @@ logging:
       org.springframework.web: DEBUG # We will log if we run in the debug mode.
       com.prorental: DEBUG
       org.hibernate.SQL: DEBUG
+      org.springframework.jdbc.core: DEBUG
       org.hibernate.type.descriptor.sql.BasicBinder: TRACE

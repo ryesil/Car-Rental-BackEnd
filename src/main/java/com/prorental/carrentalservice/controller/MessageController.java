@@ -63,10 +63,11 @@ public class MessageController {
 
     }
 
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String,String>> deleteMessage(@PathVariable Long id){
         //Logging
-        logger.info("Requested Id [{}]", id);
+        logger.info("Requested Id [{}]", id.longValue());
         messageService.deleteMessage(id);
         Map<String,String> map= new HashMap<>();
         map.put("Success", String.valueOf(true));
