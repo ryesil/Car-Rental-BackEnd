@@ -28,3 +28,6 @@ This generated password is for development use only. Your security configuration
 2023-05-25 21:20:33,173 INFO  [restartedMain] org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer:LiveReload server is running on port 35729
 2023-05-25 21:20:33,208 INFO  [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer:Tomcat started on port(s): 8080 (http) with context path '/car-rental/api'
 2023-05-25 21:20:33,220 INFO  [restartedMain] com.prorental.carrental.CarRentalServiceApplication:Started CarRentalServiceApplication in 4.855 seconds (process running for 6.001)
+2023-05-25 22:17:16,264 INFO  [http-nio-8080-exec-1] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/car-rental/api]:Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-05-25 22:17:16,264 INFO  [http-nio-8080-exec-1] org.springframework.web.servlet.DispatcherServlet:Initializing Servlet 'dispatcherServlet'
+2023-05-25 22:17:16,266 INFO  [http-nio-8080-exec-1] org.springframework.web.servlet.DispatcherServlet:Completed initialization in 2 ms
