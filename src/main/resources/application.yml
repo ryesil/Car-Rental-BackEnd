@@ -97,3 +97,8 @@ logging:
       org.hibernate.SQL: DEBUG
       org.springframework.jdbc.core: DEBUG
       org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+prorent:
+  app:
+    jwtSecret: prorent
+    jwtExpirationMs: 86400000

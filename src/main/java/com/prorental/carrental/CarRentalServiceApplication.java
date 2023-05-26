@@ -1,4 +1,4 @@
-package com.prorental.carrentalservice;
+package com.prorental.carrental;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;;

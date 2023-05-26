@@ -1,11 +1,13 @@
-package com.prorental.carrentalservice.domain;
+package com.prorental.carrental.domain;
 
 import jakarta.persistence.*;
 
 
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -13,6 +15,8 @@ import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name="users")
 public class User implements Serializable {

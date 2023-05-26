@@ -1,4 +1,4 @@
-package com.prorental.carrentalservice.controller;
+package com.prorental.carrental.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
