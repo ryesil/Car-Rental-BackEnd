@@ -18,8 +18,6 @@ target/
 *.iws
 *.iml
 *.ipr
-*.log
-*.gz
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
@@ -29,7 +27,6 @@ target/
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
-
+logs/
 ### VS Code ###
 .vscode/
-logs/prorent.log
