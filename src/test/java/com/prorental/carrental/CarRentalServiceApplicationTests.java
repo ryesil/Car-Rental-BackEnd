@@ -1,4 +1,4 @@
-package com.prorental.carrentalservice;
+package com.prorental.carrental;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

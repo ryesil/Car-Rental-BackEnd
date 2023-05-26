@@ -1,4 +1,4 @@
-package com.prorental.carrentalservice.domain;
+package com.prorental.carrental.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;

@@ -1,8 +1,8 @@
-package com.prorental.carrentalservice.service;
+package com.prorental.carrental.service;
 
-import com.prorental.carrentalservice.domain.Message;
-import com.prorental.carrentalservice.exception.ResourceNotFoundException;
-import com.prorental.carrentalservice.repository.MessageRepository;
+import com.prorental.carrental.domain.Message;
+import com.prorental.carrental.exception.ResourceNotFoundException;
+import com.prorental.carrental.repository.MessageRepository;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,7 @@ import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.List;
 
-@Transactional
+@Transactional//All or Nothing
 @AllArgsConstructor
 @Service
 public class MessageService {

@@ -1,8 +1,8 @@
-package com.prorental.carrentalservice.controller;
+package com.prorental.carrental.controller;
 
 
-import com.prorental.carrentalservice.domain.Message;
-import com.prorental.carrentalservice.service.MessageService;
+import com.prorental.carrental.domain.Message;
+import com.prorental.carrental.service.MessageService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;

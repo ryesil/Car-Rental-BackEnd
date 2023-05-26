@@ -1,14 +1,19 @@
-package com.prorental.carrentalservice.domain;
+package com.prorental.carrental.domain;
 
 
-import com.prorental.carrentalservice.domain.enumaration.UserRole;
+import com.prorental.carrental.enumaration.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.io.Serializable;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 @Table(name = "roles")
 @Entity
 public class Role implements Serializable {
