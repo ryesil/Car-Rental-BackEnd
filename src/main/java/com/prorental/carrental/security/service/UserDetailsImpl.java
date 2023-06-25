@@ -34,6 +34,7 @@ public class UserDetailsImpl implements UserDetails {
         return this.authorities;
     }
 
+    //We are writing this build to get the user from userRepo and return a userDetail in UserDetailsServiceImpl
     public static UserDetailsImpl build(User user){
        List<SimpleGrantedAuthority> authorities = user.getRoles().stream().
                map(role->new SimpleGrantedAuthority(role.getName().name())).
