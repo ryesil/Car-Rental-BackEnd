@@ -49,7 +49,7 @@ public class User implements Serializable {
 
 
 
-    @Size(min=4,max=20, message = "Password '${validatedValue}' must be between {min} and {max} characters long")
+    @Size(min=4,max=60, message = "Password '${validatedValue}' must be between {min} and {max} characters long")
     @NotBlank(message = "Please provide your password")
     @NotNull(message = "Please provide your password")
     @Column(length = 255)

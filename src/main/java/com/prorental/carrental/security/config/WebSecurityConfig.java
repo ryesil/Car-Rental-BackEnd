@@ -10,6 +10,7 @@ import com.prorental.carrental.security.AuthEntryPointJwt;
 import com.prorental.carrental.security.AuthTokenFilter;
 import com.prorental.carrental.security.service.UserDetailsServiceImpl;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,44 +31,55 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     //We didn't write autowired b/c there is AllArgsConstructor
+@Autowired
 private UserDetailsServiceImpl userDetailsServiceImpl;
 
+@Autowired
 private final AuthEntryPointJwt unAuthorizedHandler;
 
 @Bean //instructing Spring to create and manage an instance of BCryptPasswordEncoder as a bean in the application context, allowing it to be easily accessed by other components.
 public PasswordEncoder passwordEncoder(){
     return  new BCryptPasswordEncoder();
 }
-
-
-@Bean
-public AuthTokenFilter authenticationJwtTokenFilter(){
-    return new AuthTokenFilter();
-}
-
-@Bean
- protected AuthenticationManager authenticationManager() throws Exception{
-    return super.authenticationManager();
-}
-
+//
+//
+//@Bean
+//public AuthTokenFilter authenticationJwtTokenFilter(){
+//    return new AuthTokenFilter();
+//}
+//
+//@Bean
+// public AuthenticationManager authenticationManager() throws Exception{
+//    return super.authenticationManager();
+//}
+//
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsServiceImpl).passwordEncoder(passwordEncoder());
     }
-
+//
     //cors: cross-origin-resource-sharing
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().cors().disable()
-                .authorizeHttpRequests().antMatchers("/register").permitAll().
-                anyRequest().authenticated().and().sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        //http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-    }
-
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        super.configure(web);
-    }
+    //This is for endPoints
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception {
+//        http.csrf().disable().cors().disable().exceptionHandling()
+//                .authenticationEntryPoint(unAuthorizedHandler)
+//                .and().authorizeHttpRequests()
+//                .antMatchers("/register")
+//                .permitAll()
+//                .anyRequest()
+//                .authenticated()
+//                .and()
+//                .sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//        //http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+//    }
+//
+//
+//    //this is for resources like html, css ...
+//    @Override
+//    public void configure(WebSecurity web) throws Exception {
+//        super.configure(web);
+//    }
 
 }
