@@ -66,8 +66,6 @@ server:
 
 
 spring:
-  main:
-    web-application-type: none
   datasource:
     url: jdbc:postgresql://localhost:5432/prorent_db
     username: postgres
@@ -89,6 +87,8 @@ spring:
 #      name: postgres
 #      password: postgres
 logging:
+  level:
+    root: DEBUG
   file:
     name: logs/prorent.log # We are gonna log everything
   pattern:

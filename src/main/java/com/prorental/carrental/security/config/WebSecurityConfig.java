@@ -41,45 +41,45 @@ private final AuthEntryPointJwt unAuthorizedHandler;
 public PasswordEncoder passwordEncoder(){
     return  new BCryptPasswordEncoder();
 }
-//
-//
-//@Bean
-//public AuthTokenFilter authenticationJwtTokenFilter(){
-//    return new AuthTokenFilter();
-//}
-//
-//@Bean
-// public AuthenticationManager authenticationManager() throws Exception{
-//    return super.authenticationManager();
-//}
-//
+
+
+@Bean
+public AuthTokenFilter authenticationJwtTokenFilter(){
+    return new AuthTokenFilter();
+}
+
+@Bean
+ public AuthenticationManager authenticationManager() throws Exception{
+    return super.authenticationManager();
+}
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsServiceImpl).passwordEncoder(passwordEncoder());
     }
-//
-    //cors: cross-origin-resource-sharing
-    //This is for endPoints
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http.csrf().disable().cors().disable().exceptionHandling()
-//                .authenticationEntryPoint(unAuthorizedHandler)
-//                .and().authorizeHttpRequests()
-//                .antMatchers("/register")
-//                .permitAll()
-//                .anyRequest()
-//                .authenticated()
-//                .and()
-//                .sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//        //http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-//    }
-//
-//
-//    //this is for resources like html, css ...
-//    @Override
-//    public void configure(WebSecurity web) throws Exception {
-//        super.configure(web);
-//    }
+
+//    cors: cross-origin-resource-sharing
+//    This is for endPoints
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable().cors().disable().exceptionHandling()
+                .authenticationEntryPoint(unAuthorizedHandler)
+                .and().authorizeHttpRequests()
+                .antMatchers("/register")
+                .permitAll()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        //http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+    }
+
+
+    //this is for resources like html, css ...
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        super.configure(web);
+    }
 
 }
