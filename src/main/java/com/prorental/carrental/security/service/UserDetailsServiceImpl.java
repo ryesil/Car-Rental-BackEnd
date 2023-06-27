@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 @AllArgsConstructor
 @Getter
@@ -21,6 +23,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 
 //Bu kullanici eger veri tabaninda varsa load et. Ve userDetail tipinde disari gonder.
+    @Transactional
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         //We made a findByEmail method in userRepo and implemented it here.

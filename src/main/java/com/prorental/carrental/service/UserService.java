@@ -8,6 +8,7 @@ import com.prorental.carrental.exception.ConflictException;
 import com.prorental.carrental.exception.ResourceNotFoundException;
 import com.prorental.carrental.repository.RoleRepository;
 import com.prorental.carrental.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,18 +19,15 @@ import java.util.Set;
 
 @Transactional
 @Service
+@AllArgsConstructor
 public class UserService {
 
-    @Autowired
+    //To register we need the userRepo;
     private UserRepository userRepository;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
-
-    @Autowired
     private RoleRepository roleRepository;
 
-    public void register(User user) throws BadRequestException {
+    public void register(User user) throws ConflictException {
     if(userRepository.existsByEmail(user.getEmail())){
         throw new ConflictException("Error: Email is already in use");
     } else {

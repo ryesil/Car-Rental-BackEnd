@@ -10,7 +10,6 @@ import com.prorental.carrental.security.AuthEntryPointJwt;
 import com.prorental.carrental.security.AuthTokenFilter;
 import com.prorental.carrental.security.service.UserDetailsServiceImpl;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,6 +22,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -31,10 +31,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     //We didn't write autowired b/c there is AllArgsConstructor
-@Autowired
+
 private UserDetailsServiceImpl userDetailsServiceImpl;
 
-@Autowired
 private final AuthEntryPointJwt unAuthorizedHandler;
 
 @Bean //instructing Spring to create and manage an instance of BCryptPasswordEncoder as a bean in the application context, allowing it to be easily accessed by other components.
@@ -72,7 +71,7 @@ public AuthTokenFilter authenticationJwtTokenFilter(){
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        //http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
 
