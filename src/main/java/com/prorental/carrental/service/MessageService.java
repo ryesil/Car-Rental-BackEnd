@@ -1,8 +1,8 @@
 package com.prorental.carrental.service;
 
 import com.prorental.carrental.domain.Message;
-import com.prorental.carrental.exception.ResourceNotFoundException;
 import com.prorental.carrental.repository.MessageRepository;
+import com.prorental.carrental.exception.ResourceNotFoundException;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

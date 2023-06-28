@@ -2,7 +2,7 @@ package com.prorental.carrental.domain;
 
 
 import com.prorental.carrental.enumaration.UserRole;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

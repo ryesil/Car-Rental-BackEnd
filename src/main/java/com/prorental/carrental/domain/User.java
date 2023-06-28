@@ -1,14 +1,15 @@
 package com.prorental.carrental.domain;
 
-import jakarta.persistence.*;
 
-
-import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.*;
+
+import javax.persistence.Id;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -49,10 +50,10 @@ public class User implements Serializable {
 
 
 
-    @Size(min=4,max=20, message = "Password '${validatedValue}' must be between {min} and {max} characters long")
+    @Size(min=4,max=60, message = "Password '${validatedValue}' must be between {min} and {max} characters long")
     @NotBlank(message = "Please provide your password")
     @NotNull(message = "Please provide your password")
-    @Column(length = 255)
+    @Column(nullable = false, length = 255)
     private String password;
 
 
@@ -89,5 +90,4 @@ public class User implements Serializable {
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "role_id"),
     inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<Role> roles = new HashSet<>();
-
 }

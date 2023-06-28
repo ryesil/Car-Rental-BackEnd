@@ -87,6 +87,8 @@ spring:
 #      name: postgres
 #      password: postgres
 logging:
+  level:
+    root: DEBUG
   file:
     name: logs/prorent.log # We are gonna log everything
   pattern:
