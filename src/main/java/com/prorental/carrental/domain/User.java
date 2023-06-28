@@ -53,7 +53,7 @@ public class User implements Serializable {
     @Size(min=4,max=60, message = "Password '${validatedValue}' must be between {min} and {max} characters long")
     @NotBlank(message = "Please provide your password")
     @NotNull(message = "Please provide your password")
-    @Column(length = 255)
+    @Column(nullable = false, length = 255)
     private String password;
 
 

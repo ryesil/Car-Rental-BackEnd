@@ -16,7 +16,7 @@ import java.time.Instant;
 import java.util.Date;
 
 //Here we generate and validate token, then we also get the user id from the token.
-@Component
+@Component//this will allow spring to manage JwUtils class like a bean.
 public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
     @Value("${prorent.app.jwtSecret}")// we defined a value in application.yml and use it here under Value annotation

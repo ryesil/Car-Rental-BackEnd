@@ -47,6 +47,8 @@ public AuthTokenFilter authenticationJwtTokenFilter(){
     return new AuthTokenFilter();
 }
 
+
+//handles login. we put a bean so that spring uses it.
 @Bean
  public AuthenticationManager authenticationManager() throws Exception{
     return super.authenticationManager();
@@ -64,7 +66,7 @@ public AuthTokenFilter authenticationJwtTokenFilter(){
         http.csrf().disable().cors().disable().exceptionHandling()
                 .authenticationEntryPoint(unAuthorizedHandler)
                 .and().authorizeHttpRequests()
-                .antMatchers("/register")
+                .antMatchers("/register", "/login")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
