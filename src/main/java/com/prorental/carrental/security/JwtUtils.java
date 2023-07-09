@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -30,7 +29,7 @@ public String generateToken(Authentication  authentication){
    Instant expiration = now.plus(Duration.ofMillis(jwtExpirationMs));
     UserDetailsImpl userPrincipal =    (UserDetailsImpl)authentication.getPrincipal();
     return Jwts.builder().
-            setSubject(" "+(userPrincipal.getId())).
+            setSubject(""+(userPrincipal.getId())).
             setIssuedAt(Date.from(now)).
             setExpiration(Date.from(expiration)).
             signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
