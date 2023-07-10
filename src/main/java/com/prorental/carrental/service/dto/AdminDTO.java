@@ -1,24 +1,22 @@
 package com.prorental.carrental.service.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.prorental.carrental.domain.Role;
-import com.prorental.carrental.enumaration.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 import javax.validation.constraints.*;
-import java.util.HashSet;
+
 import java.util.Set;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-//This is not a database table or entity class. so we don't need @Column
-public class UserDTO {
-
+public class AdminDTO {
     @NotBlank(message = "FirstName cannot be blank")
     @NotEmpty(message = "FirstName cannot be Empty")
     @NotNull(message = "Please provide your FirstName")
@@ -38,8 +36,9 @@ public class UserDTO {
     private String email;
 
 
-    //We have nothing to do with password. So it doesn't have to be notNUll.
-    @JsonIgnore
+    @Size(min=4,max=60, message = "Password '${validatedValue}' must be between {min} and {max} characters long")
+    @NotBlank(message = "Please provide your password")
+    @NotNull(message = "Please provide your password")
     private String password;
 
 
@@ -68,37 +67,9 @@ public class UserDTO {
 
     private Boolean builtIn;
 
-
-    private Set<Role> roles = new HashSet<>();
-
-
-    public Set<Role> getRole(){
-        return roles;
-    }
+    //So this is incoming data, and it comes as a String we will convert it to Role.
+    private Set<String> roles;
 
 
-    public UserDTO(String firstName, String lastName, String phoneNumber, String email, String address, String zipCode,
-                        Set<Role> roles, Boolean builtIn){
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-        this.address = address;
-        this.zipCode = zipCode;
-        this.roles = roles;
-        this.builtIn = builtIn;
-    }
-    //We changed Roles like Role_admin, Role_customer to administrator and customer to send out.
-    public Set<String> getRoles(){
-        Set<String> roleStr = new HashSet<>();
-        Role[] role = roles.toArray(new Role[roles.size()]);
-        for(int i = 0;i < roles.size(); i++){
-            if(role[i].getName().equals(UserRole.ROLE_ADMIN)){
-                roleStr.add("Administrator");
-            } else {
-                roleStr.add("Customer");
-            }
-        }
-        return roleStr;
-    }
+
 }

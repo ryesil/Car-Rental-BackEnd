@@ -120,6 +120,7 @@ public class User implements Serializable {
         this.roles = roles;
         this.builtIn = builtIn;
     }
+
     //We changed Roles like Role_admin, Role_customer to administrator and customer in ResponseEntity.
     public Set<String> getRoles(){
         Set<String> roleStr = new HashSet<>();
