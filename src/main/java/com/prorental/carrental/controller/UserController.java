@@ -79,6 +79,7 @@ return new ResponseEntity<>(map, HttpStatus.OK);
 }
 
 //Admin or customer can make this request
+//This is for admin or customer to change their own information
 @PutMapping
 @PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
 public ResponseEntity<Map<String, Boolean>> updateUser(HttpServletRequest request, @Valid @RequestBody UserDTO userDTO){
@@ -95,6 +96,17 @@ public ResponseEntity<Map<String, Boolean>> updateUser(HttpServletRequest reques
 //        userService.addUserAuth(adminDTO);
 //        return new ResponseEntity<>(new UserResponseMessage("User added successfully", true), HttpStatus.OK);
 //    }
+
+
+//Below is for admin to change any user's information
+@PutMapping("/{id}/auth")
+@PreAuthorize("hasRole('ADMIN')")
+public ResponseEntity<Map<String, Boolean>> updateUserAuth(@PathVariable  Long id, @Valid @RequestBody AdminDTO adminDTO){
+       userService.updateUserAuth(id, adminDTO);
+       Map<String, Boolean> map =new HashMap<>();
+        map.put("User successfully updated", true);
+       return new ResponseEntity<>(map, HttpStatus.OK);
+}
 
 
 //We convert User to UserDTO to hide sensitive information

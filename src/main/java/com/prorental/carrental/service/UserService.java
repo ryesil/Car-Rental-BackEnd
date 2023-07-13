@@ -83,9 +83,10 @@ public void addUserAuth(AdminDTO adminDTO) throws BadRequestException {
       Optional<User> foundUser =  userRepository.findById(id);
       //we have set the builtIn false at default. If the user is builtIn then we cannot change that user.
         if(foundUser.get().getBuiltIn()){
-            throw new ResourceNotFoundException("You don't have permisson to change this user info");
+            throw new ResourceNotFoundException("You don't have permission to change this user info");
         }
 
+        //if the user's email in the database doesn't match the incoming email
         if(emailExists && !userDTO.getEmail().equals(foundUser.get().getEmail())){
             throw new ConflictException("Error: Email is in use");
         }
@@ -96,6 +97,33 @@ public void addUserAuth(AdminDTO adminDTO) throws BadRequestException {
                 userDTO.getEmail(), userDTO.getAddress(), userDTO.getZipCode());
     }
 
+   public void updateUserAuth(Long id, AdminDTO adminDTO) throws BadRequestException{
+        Boolean emailExists = userRepository.existsByEmail(adminDTO.getEmail());
+       Optional<User> foundUser = userRepository.findById(id);
+
+       if(foundUser.get().getBuiltIn()){
+           throw new ResourceNotFoundException("You don't have permission to change this user info");
+       }
+       adminDTO.setBuiltIn(false);
+
+       if(emailExists && !foundUser.get().getEmail().equals(adminDTO.getEmail())){
+           throw new ConflictException("Eror: Email is in use");
+       }
+        if(adminDTO.getPassword() == null){
+            adminDTO.setPassword(foundUser.get().getPassword());
+        } else {
+            String encodedPassword = passwordEncoder.encode(adminDTO.getPassword());
+            adminDTO.setPassword(encodedPassword);
+        }
+        //Roles will come as string, and we convert them to Roles to save to the database.
+        Set<String> userRoles = adminDTO.getRoles();
+        Set<Role> roles = addRoles(userRoles);
+
+        User user =new User(id, adminDTO.getFirstName(), adminDTO.getLastName(), adminDTO.getEmail(), adminDTO.getPassword(),
+                adminDTO.getPhoneNumber(), adminDTO.getAddress(), adminDTO.getZipCode(), adminDTO.getBuiltIn(), roles
+                );
+            userRepository.save(user);
+   }
 
 
 public Set<Role> addRoles(Set<String> userRoles){
