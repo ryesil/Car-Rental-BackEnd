@@ -72,9 +72,9 @@ public class UserDTO {
     private Set<Role> roles = new HashSet<>();
 
 
-    public Set<Role> getRole(){
-        return roles;
-    }
+//    public Set<Role> getRole(){
+//        return roles;
+//    }
 
 
     public UserDTO(String firstName, String lastName, String phoneNumber, String email, String address, String zipCode,

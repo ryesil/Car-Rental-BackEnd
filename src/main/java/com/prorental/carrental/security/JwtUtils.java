@@ -24,6 +24,9 @@ public class JwtUtils {
     @Value("${prorent.app.jwtExpirationMs}")
     private Long jwtExpirationMs;
 
+
+    //this is the token we make for the user. We play user's id, issue time and expiration, and signature in it.
+    // we can see all but signature at the end.
 public String generateToken(Authentication  authentication){
    Instant now= Instant.now();
    Instant expiration = now.plus(Duration.ofMillis(jwtExpirationMs));

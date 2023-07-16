@@ -27,6 +27,10 @@ import java.util.stream.Collectors;
 //@AllArgsConstructor
 @RequestMapping("/user")
 public class UserController {
+//Important. For all requests, we get the token, then we validate it. Then we get the user id from the token. Then we check
+// if the user exists in the database. Then we make a createUSernamePasswordAuth Token then we put it into the
+// SecurityContextHolder then we forward it to the other area.
+
 
 //3 ways to do autowiring
 // we can add AllArgConstructor, or we can use AutoWired annotation or we can use constructor like below.
@@ -40,7 +44,8 @@ public class UserController {
    }
 
 
-   //below will return everthing about the user. we don't want that.
+   //below will return everything about the user. we don't want that. That's why we user userDTO.
+    //Admin wants all users
 @GetMapping("/auth/all")
 @PreAuthorize("hasRole('ADMIN')")
 public ResponseEntity<List<UserDTO>> getAllUsers(){
@@ -49,6 +54,7 @@ public ResponseEntity<List<UserDTO>> getAllUsers(){
       return new ResponseEntity<>(userDTOList, HttpStatus.OK);
 }
 
+//Admin wants a user
 @GetMapping("/{id}/auth")
 @PreAuthorize("hasRole('ADMIN')")
 public ResponseEntity<UserDTO> getUSerByIdAdmin(@PathVariable Long id ){
@@ -57,6 +63,7 @@ public ResponseEntity<UserDTO> getUSerByIdAdmin(@PathVariable Long id ){
        return new ResponseEntity<>(userDTO, HttpStatus.OK);
 }
 
+//admin or user wants their own info
 @GetMapping
 @PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
 public ResponseEntity<UserDTO> getUserById(HttpServletRequest request){
@@ -107,6 +114,30 @@ public ResponseEntity<Map<String, Boolean>> updateUserAuth(@PathVariable  Long i
         map.put("User successfully updated", true);
        return new ResponseEntity<>(map, HttpStatus.OK);
 }
+
+@PatchMapping("/auth")
+@PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
+public ResponseEntity<Map<String, Boolean>> updatePassword(HttpServletRequest request, @RequestBody Map<String, String> userMap){
+       //when the user logins, we set id attribute into the request body. That's why we can get it anytime we want for any request from that user.
+    Long id = (Long) request.getAttribute("id");
+    String newPassword = userMap.get("newPassword");
+    String oldPassword = userMap.get("oldPassword");
+    userService.updatePassword(id, newPassword, oldPassword);
+    Map<String, Boolean> map = new HashMap<>();
+    map.put("Password changed successfully", true);
+    return new ResponseEntity<>(map, HttpStatus.OK);
+}
+
+@DeleteMapping("/{id}/auth")
+@PreAuthorize("hasRole('ADMIN')")
+public ResponseEntity<Map<String, Boolean>> deleteUser(@PathVariable Long id){
+       userService.removeById(id);
+    Map<String, Boolean> map = new HashMap<>();
+    map.put("User deleted successfully", true);
+    return new ResponseEntity<>(map, HttpStatus.OK);
+}
+
+
 
 
 //We convert User to UserDTO to hide sensitive information

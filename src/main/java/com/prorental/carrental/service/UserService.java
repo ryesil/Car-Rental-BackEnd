@@ -11,6 +11,7 @@ import com.prorental.carrental.repository.UserRepository;
 import com.prorental.carrental.service.dto.AdminDTO;
 import com.prorental.carrental.service.dto.UserDTO;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -125,6 +126,47 @@ public void addUserAuth(AdminDTO adminDTO) throws BadRequestException {
             userRepository.save(user);
    }
 
+
+ //My version of updatePassword (working :))
+//   public void updatePassword(Long id, String oldPassword, String newPassword){
+//    Boolean userExists = userRepository.existsById(id);
+//    Boolean newPasswordChecker = newPassword.length() <=60 && newPassword.length() >=4;
+//    if(!userExists || !newPasswordChecker){
+//        throw new BadRequestException("User not found or new password doesn't meet requirements");
+//    } else {
+//        String encodedPassword = passwordEncoder.encode(newPassword);
+//        Optional<User> user = userRepository.findById(id);
+//        user.get().setPassword(encodedPassword);
+//        userRepository.save(user.get());
+//    }
+//   }
+public void updatePassword(Long id, String newPassword, String oldPassword){
+        User user = userRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("user not found with id "+ id));
+        //if default user, then we don't want to change it
+        if(user.getBuiltIn()){
+            throw new ResourceNotFoundException("You don't have permission to update password");
+        }
+        //we got to check the coming oldPassword with the user's password in the database.
+        //We compare the hashed passwords.
+    // Below haspw gets the salt of the user.getPassword and applies it to oldPassword to produce a hashed password.
+    //Then compares this new hashed password with the hashed password from the database.
+        if(!(BCrypt.hashpw(oldPassword, user.getPassword())).equals(user.getPassword())){
+            throw new BadRequestException("Your password doesn't match");
+        }
+        //we will update the user's password then save it to database.
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        user.setPassword(encodedPassword);
+        userRepository.save(user);
+}
+
+public void removeById(Long id) throws ResourceNotFoundException{
+      User user = userRepository.findById(id).orElseThrow(()->new ResourceNotFoundException(String.format(USER_NOT_FOUND_MSG,id)));
+      if(user.getBuiltIn()){
+          throw new BadRequestException("You don't have permission to delete ");
+      }
+      userRepository.deleteById(id);
+
+    }
 
 public Set<Role> addRoles(Set<String> userRoles){
 Set<Role> roles = new HashSet<>();
