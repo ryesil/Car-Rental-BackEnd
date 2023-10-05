@@ -2,19 +2,20 @@ package com.prorental.carrental.service;
 
 import com.prorental.carrental.domain.Role;
 import com.prorental.carrental.domain.User;
+import com.prorental.carrental.dto.UserDTO;
 import com.prorental.carrental.enumaration.UserRole;
 import com.prorental.carrental.exception.BadRequestException;
 import com.prorental.carrental.exception.ConflictException;
 import com.prorental.carrental.exception.ResourceNotFoundException;
 import com.prorental.carrental.repository.RoleRepository;
 import com.prorental.carrental.repository.UserRepository;
-import com.prorental.carrental.service.dto.AdminDTO;
-import com.prorental.carrental.service.dto.UserDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.prorental.carrental.dto.AdminDTO;
+
 
 import java.util.HashSet;
 import java.util.List;
@@ -121,7 +122,7 @@ public void addUserAuth(AdminDTO adminDTO) throws BadRequestException {
         Set<Role> roles = addRoles(userRoles);
 
         User user =new User(id, adminDTO.getFirstName(), adminDTO.getLastName(), adminDTO.getEmail(), adminDTO.getPassword(),
-                adminDTO.getPhoneNumber(), adminDTO.getAddress(), adminDTO.getZipCode(), adminDTO.getBuiltIn(), roles
+                adminDTO.getPhoneNumber(), adminDTO.getAddress(), adminDTO.getZipCode(), roles, adminDTO.getBuiltIn()
                 );
             userRepository.save(user);
    }
@@ -167,6 +168,15 @@ public void removeById(Long id) throws ResourceNotFoundException{
       userRepository.deleteById(id);
 
     }
+
+    public List<User> searchUserByLastName(String lastName){
+        return userRepository.findByLastNameStartingWith(lastName);
+    }
+
+    public List<User> searchUserByLastNameContain(String lastName){
+        return userRepository.findByLastNameContaining(lastName);
+    }
+
 
 public Set<Role> addRoles(Set<String> userRoles){
 Set<Role> roles = new HashSet<>();

@@ -2,17 +2,11 @@ package com.prorental.carrental.controller;
 
 import com.prorental.carrental.domain.User;
 import com.prorental.carrental.service.UserService;
-import com.prorental.carrental.service.dto.AdminDTO;
-import com.prorental.carrental.service.dto.UserDTO;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.apache.coyote.Response;
+import com.prorental.carrental.dto.AdminDTO;
+import com.prorental.carrental.dto.UserDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jmx.export.annotation.ManagedNotifications;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +18,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-//@AllArgsConstructor
 @RequestMapping("/user")
 public class UserController {
 //Important. For all requests, we get the token, then we validate it. Then we get the user id from the token. Then we check
@@ -137,8 +130,23 @@ public ResponseEntity<Map<String, Boolean>> deleteUser(@PathVariable Long id){
     return new ResponseEntity<>(map, HttpStatus.OK);
 }
 
+//We filter in the database by lastName
+//user/search?lastname=lastname
+    @GetMapping("/search")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<UserDTO>>  searchUserByLastName(@RequestParam("lastname") String lastName){
+     List<User> userList = userService.searchUserByLastName(lastName);
+     List<UserDTO> userListDTO = userList.stream().map(this::convertToDTO).collect(Collectors.toList());
+       return new ResponseEntity<>(userListDTO,HttpStatus.OK);
+    }
 
-
+    @GetMapping("/search/contain")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<UserDTO>>  searchUserByLastNameContain(@RequestParam("lastname") String lastName){
+        List<User> userList = userService.searchUserByLastNameContain(lastName);
+        List<UserDTO> userListDTO = userList.stream().map(this::convertToDTO).collect(Collectors.toList());
+        return new ResponseEntity<>(userListDTO,HttpStatus.OK);
+    }
 
 //We convert User to UserDTO to hide sensitive information
 private UserDTO convertToDTO(User user){
