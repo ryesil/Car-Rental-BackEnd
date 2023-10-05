@@ -24,7 +24,7 @@ public class FileDB {
 
     private String name; //Name of the file
 
-    private String type; // mime type
+    private String type; // mime type=> extension of a file like .doc, .txt
 
     @JsonIgnore
     @Lob //datatype for storing large object data

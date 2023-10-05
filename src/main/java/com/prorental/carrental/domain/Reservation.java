@@ -17,7 +17,8 @@ import java.time.temporal.ChronoUnit;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "reservations")
+@Entity
+@Table(name = "reservations")
 public class Reservation {
 
     @Id
@@ -25,7 +26,8 @@ public class Reservation {
     private Long id;
 
     //Here we have a car_id FK column that takes the PK id of Car and adds it to this table as FK.
-    //Powerful
+    //This is the entire car. We are using carId to reach it. In this table we have the carID that
+    //represent the car that is associated with this reservation.
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "car_id", referencedColumnName = "id")
     private Car carId;
