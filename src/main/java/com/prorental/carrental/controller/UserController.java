@@ -4,7 +4,7 @@ import com.prorental.carrental.domain.User;
 import com.prorental.carrental.service.UserService;
 import com.prorental.carrental.dto.AdminDTO;
 import com.prorental.carrental.dto.UserDTO;
-import org.modelmapper.ModelMapper;
+//import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,11 +30,11 @@ public class UserController {
 //@Autowired
 //private UserService userService;
    private UserService userService;
-   private ModelMapper modelMapper;
-   public UserController(UserService userService, ModelMapper modelMapper){
-       this.userService = userService;
-       this.modelMapper = modelMapper;
-   }
+   //private ModelMapper modelMapper;
+//   public UserController(UserService userService, ModelMapper modelMapper){
+//       this.userService = userService;
+//       this.modelMapper = modelMapper;
+//   }
 
 
    //below will return everything about the user. we don't want that. That's why we user userDTO.
