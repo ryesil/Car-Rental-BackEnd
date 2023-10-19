@@ -56,11 +56,11 @@ public class UserJWTController {
         //We got the auth so that we can make a token below
         String jwt = jwtUtils.generateToken(authentication);
 
+        //we make a header and put the token into the header.
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Authorization","Bearer "+jwt);
         //We return a token to the UI.
         return new ResponseEntity<>(new JWTToken(jwt), httpHeaders, HttpStatus.OK);
-
     }
 
     static class JWTToken{
