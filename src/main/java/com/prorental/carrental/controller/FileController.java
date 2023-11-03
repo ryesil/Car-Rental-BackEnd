@@ -3,10 +3,8 @@ package com.prorental.carrental.controller;
 
 import com.prorental.carrental.domain.FileDB;
 import com.prorental.carrental.dto.FileDTO;
-import com.prorental.carrental.repository.FileDBRepository;
 import com.prorental.carrental.service.FileDBService;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

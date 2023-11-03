@@ -1,4 +1,4 @@
-package com.prorental.carrental.security;
+package com.prorental.carrental.security.jwt;
 
 
 import com.prorental.carrental.repository.UserRepository;
@@ -11,6 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -27,8 +28,8 @@ import java.util.Optional;
 //It comes in the header.
 public class AuthTokenFilter extends OncePerRequestFilter {
     private final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
-    //IN order to use Autowired, We need to put this into the application context.
-    //durin run time, component scan finds it and makes an object out of it and then throws it into application context.
+    //In order to use Autowired, We need to put this into the application context.
+    //During run time, component scan finds it and makes an object out of it and then throws it into application context.
     @Autowired//this means application context give me this class. So JwtUtils class must have an annotation like @Service, @controller...
     private JwtUtils jwtUtils;
 
@@ -48,14 +49,18 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         try {
             if(jwtToken != null && jwtUtils.validateToken(jwtToken)){
                 Long id = jwtUtils.getIdFromJwtToken(jwtToken);
+                //When the request comes in we set the id attribute to the request to use it in userController.
                 request.setAttribute("id",id);
                 Optional<User> user = userRepository.findById(id);
+                //This user is found in UserDetailsServiceImpl class and build to a UserDetailsImpl
                 UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(user.get().getEmail());
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (UsernameNotFoundException e) {
-            logger.error("User Not Found ${}", e.getMessage());
+            logger.error("Cannot set user authentication ${}", e.getMessage());
         }
         //If there are more filters. below code will send this request to the other filters.
         // This is like next in npm next
@@ -71,6 +76,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     }
 
     private String parseJwt(HttpServletRequest request){
+        //Bearer 123asdasdas213123123qwdasd
         //get the header with the Authorization from request
         String headerAuth = request.getHeader("Authorization");
 

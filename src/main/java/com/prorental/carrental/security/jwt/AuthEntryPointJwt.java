@@ -1,4 +1,4 @@
-package com.prorental.carrental.security;
+package com.prorental.carrental.security.jwt;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.AuthenticationException;
@@ -21,8 +21,8 @@ public class AuthEntryPointJwt  implements AuthenticationEntryPoint {
     private static final Logger Logger = LoggerFactory.getLogger(AuthEntryPointJwt.class);
 
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
     Logger.error("Unauthorized error ${}", authException.getMessage());
-    response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "Error:Unauthorized");
+    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error:Unauthorized");
     }
 }

@@ -6,8 +6,8 @@ package com.prorental.carrental.security.config;
 //Filters, guards, password Encoder
 //import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
-import com.prorental.carrental.security.AuthEntryPointJwt;
-import com.prorental.carrental.security.AuthTokenFilter;
+import com.prorental.carrental.security.jwt.AuthEntryPointJwt;
+import com.prorental.carrental.security.jwt.AuthTokenFilter;
 import com.prorental.carrental.security.service.UserDetailsServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -23,7 +23,13 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
+//To customize Spring Security for JWT use, we need a configuration class
+// annotated with @EnableWebSecurity annotation in our classpath.
+// Also, to simplify the customization process, the framework exposes
+// a WebSecurityConfigurerAdapter class. We will extend this adapter
+// and override both of its functions so as to:
+//1)Configure the authentication manager with the correct provider
+//2)Configure web security (public URLs, private URLs, authorization, etc.)
 @Configuration
 @EnableWebSecurity
 @AllArgsConstructor
@@ -47,18 +53,20 @@ public AuthTokenFilter authenticationJwtTokenFilter(){
     return new AuthTokenFilter();
 }
 
-
+//This is the entry point for authentication manager.
 //handles login. we put a bean so that spring uses it.
 @Bean
  public AuthenticationManager authenticationManager() throws Exception{
     return super.authenticationManager();
 }
 
+//    Configure the authentication manager with the correct provider
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsServiceImpl).passwordEncoder(passwordEncoder());
     }
 
+//   Configure web security (public URLs, private URLs, authorization, etc.)
 //    cors: cross-origin-resource-sharing
 //    This is for endPoints
     @Override
@@ -82,5 +90,20 @@ public AuthTokenFilter authenticationJwtTokenFilter(){
     public void configure(WebSecurity web) throws Exception {
         super.configure(web);
     }
+
+    // Used by Spring Security if CORS is enabled.
+//    @Bean
+//    public CorsFilter corsFilter() {
+//        UrlBasedCorsConfigurationSource source =
+//                new UrlBasedCorsConfigurationSource();
+//        CorsConfiguration config = new CorsConfiguration();
+//        config.setAllowCredentials(true);
+//        config.addAllowedOrigin("*");
+//        config.addAllowedHeader("*");
+//        config.addAllowedMethod("*");
+//        source.registerCorsConfiguration("/**", config);
+//        return new CorsFilter(source);
+//    }
+
 
 }

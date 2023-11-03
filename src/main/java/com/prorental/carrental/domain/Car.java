@@ -53,7 +53,7 @@ public class Car implements Serializable {
     private Integer age;
 
 
-//This one is a seperate table. So when we get the car from UI we don't get the imageIDs.
+//This one is a separate table. So when we get the car from UI we don't get the imageIDs.
 //We find them in the database and add to the car. Look at CarController add method.
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name="car_image",

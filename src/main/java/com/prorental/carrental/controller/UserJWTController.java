@@ -3,7 +3,7 @@ package com.prorental.carrental.controller;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.prorental.carrental.controller.vm.LoginVM;
 import com.prorental.carrental.domain.User;
-import com.prorental.carrental.security.JwtUtils;
+import com.prorental.carrental.security.jwt.JwtUtils;
 import com.prorental.carrental.service.UserService;
 
 import lombok.AllArgsConstructor;
@@ -28,7 +28,7 @@ import java.util.Map;
 @RequestMapping
 public class UserJWTController {
 
-    //We get the object That we put into the application context by usign autowired
+    //We get the object That we put into the application context by using autowired
     private UserService userService;
 
     private AuthenticationManager authenticationManager;
@@ -45,6 +45,8 @@ public class UserJWTController {
      return new ResponseEntity<>(map, HttpStatus.CREATED);
     }
 
+    //@GetMapping is used to retrieve data, and the parameters in a GET request are often visible in the URL. For login operations, sensitive information is generally sent in the request body for security reasons, which is why it should remain a @PostMapping endpoint.
+    //Therefore, changing the @PostMapping to @GetMapping for the login endpoint is not advisable due to security concerns.
     //We add this to the permitAll in webSecurity
     @PostMapping("/login")
     public ResponseEntity<JWTToken> login(@Valid @RequestBody LoginVM loginVM){
@@ -54,7 +56,7 @@ public class UserJWTController {
        //Since we got the green light (authentication), we put it into the SecurityContextHolder to use it anywhere we want.
         SecurityContextHolder.getContext().setAuthentication(authentication);
         //We got the auth so that we can make a token below
-        String jwt = jwtUtils.generateToken(authentication);
+        String jwt = jwtUtils.generateJwtToken(authentication);
 
         //we make a header and put the token into the header.
         HttpHeaders httpHeaders = new HttpHeaders();

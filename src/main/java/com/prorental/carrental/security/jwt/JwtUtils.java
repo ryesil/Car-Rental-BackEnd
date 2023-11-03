@@ -1,4 +1,4 @@
-package com.prorental.carrental.security;
+package com.prorental.carrental.security.jwt;
 
 import com.prorental.carrental.security.service.UserDetailsImpl;
 
@@ -27,10 +27,11 @@ public class JwtUtils {
 
     //this is the token we make for the user. We play user's id, issue time and expiration, and signature in it.
     // we can see all but signature at the end.
-public String generateToken(Authentication  authentication){
-   Instant now= Instant.now();
+public String generateJwtToken(Authentication  authentication){
+   Instant now = Instant.now();
    Instant expiration = now.plus(Duration.ofMillis(jwtExpirationMs));
-    UserDetailsImpl userPrincipal =    (UserDetailsImpl)authentication.getPrincipal();
+   //Principle refers to the currently authenticated user.
+    UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
     return Jwts.builder().
             setSubject(""+(userPrincipal.getId())).
             setIssuedAt(Date.from(now)).
@@ -39,9 +40,14 @@ public String generateToken(Authentication  authentication){
 }
 
 // We need this in the AuthTokenFilter to validate the incoming token
+//    Jwts.parser() creates a new JWT parser instance.
+//setSigningKey(jwtSecret) configures the parser with the key needed for signature validation.
+//parseClaimsJws(token) parses the token and verifies its signature against the provided key.
+// If the token's signature is valid, it returns a Jws<Claims> object containing the token's claims.
 public boolean validateToken(String token){
 
     try {
+        //after parseClaimsJws we can continue and get body as well but we don't need that here.
         Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
         return true;
     } catch (ExpiredJwtException e) {

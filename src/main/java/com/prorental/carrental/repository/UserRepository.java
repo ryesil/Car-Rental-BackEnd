@@ -23,7 +23,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
      Boolean existsByEmail(String email) throws ConflictException;
 
+     //We added ProjectUser
      List<ProjectUser> findAllBy();
+
 
      //We user entity class name not the table name
     @Transactional
