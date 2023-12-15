@@ -93,6 +93,7 @@ public void addUserAuth(AdminDTO adminDTO) throws BadRequestException {
         }
 
         //if the user's email in the database doesn't match the incoming email
+        //Means email exists in the database but belongs to someone else.
         if(emailExists && !userDTO.getEmail().equals(foundUser.get().getEmail())){
             throw new ConflictException("Error: Email is in use");
         }

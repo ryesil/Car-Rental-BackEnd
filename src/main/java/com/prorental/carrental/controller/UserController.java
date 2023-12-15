@@ -6,11 +6,9 @@ import com.prorental.carrental.security.jwt.JwtUtils;
 import com.prorental.carrental.service.UserService;
 import com.prorental.carrental.dto.AdminDTO;
 import com.prorental.carrental.dto.UserDTO;
-//import org.modelmapper.ModelMapper;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,9 +26,10 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "*",maxAge = 3600)
 @RestController
 @AllArgsConstructor
+@Produces(MediaType.APPLICATION_JSON)
 @RequestMapping("/users")
 public class UserController {
-    //Important. For all requests, we get the token, then we validate it. Then we get the user id from the token. Then we check
+//Important. For all requests, we get the token, then we validate it. Then we get the user id from the token. Then we check
 // if the user exists in the database. Then we make a createUSernamePasswordAuth Token then we put it into the
 // SecurityContextHolder then we forward it to the other area.
     public UserService userService;
@@ -48,7 +48,7 @@ public class UserController {
 
 
     //Admin wants a user
-    @GetMapping("/user")
+    @GetMapping("/user/{id}/auth")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserDTO> getUserByIdAdmin(@PathVariable Long id) {
         UserDTO user = userService.findById(id);
@@ -57,7 +57,7 @@ public class UserController {
 
 
     //admin or user wants their own info
-    @GetMapping
+    @GetMapping("/user")
     @PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
     public ResponseEntity<UserDTO> getUserById(HttpServletRequest request) {
         //we need to set the id attribute to get it here. We set it in AuthTokenFilter
@@ -68,7 +68,8 @@ public class UserController {
     }
 
     //Admin can add a new User
-    //Is this user an admin? Probably yes
+    //Is this user an admin Probably yes
+    //Confirmed. This can be ADMIN or Customer
     @PostMapping("/add")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Map<String, Boolean>> addUser(@Valid @RequestBody AdminDTO adminDTO) {
@@ -79,8 +80,8 @@ public class UserController {
     }
 
     //Admin or customer can make this request
-//This is for admin or customer to change their own information
-    @PutMapping
+   //This is for admin or customer to change their own information
+    @PutMapping("/user")
     @PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
     public ResponseEntity<Map<String, Boolean>> updateUser(HttpServletRequest request, @Valid @RequestBody UserDTO userDTO) {
         Long id = (Long) request.getAttribute("id");
@@ -90,7 +91,10 @@ public class UserController {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
-    //Below is for admin to change any user's information
+    //This should be for admin to change any customer's information.
+    //So we need to check if admin and the user exists.
+    // The user should be a customer and admin should be an admin
+    //right now it is not doing it.
     @PutMapping("/{id}/auth")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Map<String, Boolean>> updateUserAuth(@PathVariable Long id, @Valid @RequestBody AdminDTO adminDTO) {
@@ -132,6 +136,7 @@ public ResponseEntity<Map<String, Boolean>> deleteUser(@PathVariable Long id){
        return new ResponseEntity<>(userListDTO,HttpStatus.OK);
     }
 
+    //http://localhost:8080/car-rental/api/users/search/contain?lastname=t
     @GetMapping("/search/contain")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<UserDTO>>  searchUserByLastNameContain(@RequestParam("lastname") String lastName){

@@ -43,8 +43,8 @@ public class User implements Serializable {
     @Column(nullable = false, length = 255)
     private String password;
 
-    @Pattern(regexp = "^((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$",
-            message = "Please enter valid phone number")
+//    @Pattern(regexp = "^((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$",
+//            message = "Please enter valid phone number")
     @Size(min = 10, max= 14, message = "Phone number should be exact 14 characters")
     @NotNull(message = "Please enter your phone number")
     @Column(nullable = false, length = 14)

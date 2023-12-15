@@ -42,13 +42,11 @@ public class FileController {
         map.put("message", "Could not upload the file: "+ file.getOriginalFilename()+"!" );
         return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(map);
     }
-
-
     }
 
 
     // In the below code, We fetched all the files from the repo then converted them to fileDTO then sent
-    @GetMapping("")
+    @GetMapping("/all")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<FileDTO>> getAllFiles(){
         List<FileDTO> fileList = fileDBService.getAllFiles().map(dbFile-> {
