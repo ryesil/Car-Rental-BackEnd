@@ -47,7 +47,7 @@ public class Reservation {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="MM/dd/yyyy HH:mm:ss", timezone = "US/Central")
     @NotNull(message = "Please enter the drop up time of the reservation")
     @Column(nullable = false)
-    private LocalDateTime dropOfTime;
+    private LocalDateTime dropOffTime;
 
     @Column(length = 50, nullable = false)
     @NotNull(message = "Please enter the pick up location of the reservation")
@@ -66,17 +66,17 @@ public class Reservation {
     private Double totalPrice;
 
 
-    public Long getTotalHours(LocalDateTime pickUpTime, LocalDateTime dropOfTime) {
-//        Duration duration = Duration.between(pickUpTime,dropOfTime);
+    public Long getTotalHours(LocalDateTime pickUpTime, LocalDateTime dropOffTime) {
+//        Duration duration = Duration.between(pickUpTime,dropOffTime);
 //        return duration.toHours();
-        return ChronoUnit.HOURS.between(pickUpTime,dropOfTime);
+        return ChronoUnit.HOURS.between(pickUpTime,dropOffTime);
     }
 }
 
 
 //Reservation will look like this
-//|   id  | car_id | user_id |   pick_up_time       |    drop_off_time      | pick_up_location | drop_off_location |    status    | total_price |
-//        |-------|--------|---------|-----------------------|-----------------------|-----------------|-------------------|--------------|-------------|
+//        |   id  | car_id | user_id |   pick_up_time       |    drop_off_time     | pick_up_location| drop_off_location |    status    | total_price |
+//        |-------|--------|---------|----------------------|----------------------|-----------------|-------------------|--------------|-------------|
 //        |   1   |   101  |   201   | 2023-10-15 10:00:00  | 2023-10-18 15:30:00  |     Airport     |     Downtown      |  CONFIRMED   |   350.50    |
 //        |   2   |   102  |   202   | 2023-10-16 14:30:00  | 2023-10-19 12:45:00  |   City Center   |     Beachfront    |  PENDING     |   275.00    |
 //        |   3   |   103  |   203   | 2023-10-17 09:15:00  | 2023-10-19 10:00:00  |    Suburbia     |    Shopping Mall  |  CONFIRMED   |   420.75    |
@@ -97,7 +97,7 @@ public class Reservation {
 //    "email": "john.doe@example.com"
 //  },
 //  "pickUpTime": "2023-10-15T10:00:00",
-//  "dropOfTime": "2023-10-18T15:30:00",
+//  "dropOffTime": "2023-10-18T15:30:00",
 //  "pickUpLocation": "Airport",
 //  "dropOfLocation": "Downtown",
 //  "status": "CONFIRMED",

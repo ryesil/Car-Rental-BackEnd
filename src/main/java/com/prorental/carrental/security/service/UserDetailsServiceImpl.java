@@ -17,10 +17,15 @@ import javax.transaction.Transactional;
 @AllArgsConstructor
 @Getter
 @Setter
+//UserDetailsService  loads user-specific data
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private UserRepository userRepository;
 
+//In most use cases, authentication providers extract user identity information based on
+// credentials from a database and then perform validation. Because this use case is so common,
+// Spring developers decided to extract it as a separate interface, which exposes the single function:
+//loadUserByUsername accepts username as a parameter and returns the user identity object.
 
 //Bu kullanici eger veri tabaninda varsa load et. Ve userDetail tipinde disari gonder.
     @Transactional

@@ -3,10 +3,8 @@ package com.prorental.carrental.controller;
 
 import com.prorental.carrental.domain.FileDB;
 import com.prorental.carrental.dto.FileDTO;
-import com.prorental.carrental.repository.FileDBRepository;
 import com.prorental.carrental.service.FileDBService;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -44,13 +42,11 @@ public class FileController {
         map.put("message", "Could not upload the file: "+ file.getOriginalFilename()+"!" );
         return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(map);
     }
-
-
     }
 
 
     // In the below code, We fetched all the files from the repo then converted them to fileDTO then sent
-    @GetMapping("")
+    @GetMapping("/all")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<FileDTO>> getAllFiles(){
         List<FileDTO> fileList = fileDBService.getAllFiles().map(dbFile-> {

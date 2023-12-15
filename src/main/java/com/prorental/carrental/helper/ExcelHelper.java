@@ -20,7 +20,7 @@ public class ExcelHelper {
     static String SHEET_CAR = "Cars";
 
     static String[] HEADERS_RESERVATION = {"Id", "CarId", "CarModel", "CustomerId", "CustomerFullName",
-            "CustomerPhone", "PickUpTime", "DropOfTime", "PickUpLocation", "DropOfLocation", "Status"};
+            "CustomerPhone", "PickUpTime", "DropOffTime", "PickUpLocation", "DropOfLocation", "Status"};
     static String SHEET_RESERVATION = "Reservations";
 
 
@@ -134,7 +134,7 @@ public class ExcelHelper {
                     row.createCell(4).setCellValue(reservation.getUserId().getFullName());
                     row.createCell(5).setCellValue(reservation.getUserId().getPhoneNumber());
                     row.createCell(6).setCellValue(reservation.getPickUpTime().toString());
-                    row.createCell(7).setCellValue(reservation.getDropOfTime().toString());
+                    row.createCell(7).setCellValue(reservation.getDropOffTime().toString());
                     row.createCell(8).setCellValue(reservation.getPickUpLocation());
                     row.createCell(9).setCellValue(reservation.getDropOfLocation());
                     row.createCell(10).setCellValue(reservation.getStatus().toString());

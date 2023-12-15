@@ -7,6 +7,7 @@ import com.prorental.carrental.enumaration.UserRole;
 import com.prorental.carrental.exception.BadRequestException;
 import com.prorental.carrental.exception.ConflictException;
 import com.prorental.carrental.exception.ResourceNotFoundException;
+import com.prorental.carrental.projection.ProjectUser;
 import com.prorental.carrental.repository.RoleRepository;
 import com.prorental.carrental.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -49,13 +50,16 @@ public class UserService {
     }
 
     }
-    public List<User> fetchAllUsers(){
-        return userRepository.findAll();
+    public List<ProjectUser> fetchAllUsers(){
+        return userRepository.findAllBy();
     }
 
-    public User findById(Long id) throws ResourceNotFoundException{
+    public UserDTO findById(Long id) throws ResourceNotFoundException{
      User user =  userRepository.findById(id).orElseThrow(()->new ResourceNotFoundException(String.format(USER_NOT_FOUND_MSG,id)));
-    return user;
+     UserDTO userDTO = new UserDTO();
+     userDTO.setRoles(user.getRole());
+     return new UserDTO(user.getFirstName(), user.getLastName(), user.getPhoneNumber(), user.getEmail(),
+             user.getAddress(), user.getZipCode(), userDTO.getRoles(), user.getBuiltIn());
     }
 
     //We receive a user info
@@ -89,11 +93,12 @@ public void addUserAuth(AdminDTO adminDTO) throws BadRequestException {
         }
 
         //if the user's email in the database doesn't match the incoming email
+        //Means email exists in the database but belongs to someone else.
         if(emailExists && !userDTO.getEmail().equals(foundUser.get().getEmail())){
             throw new ConflictException("Error: Email is in use");
         }
 
-        //UserRepository doesn't have update. We gotto make it.
+        //UserRepository doesn't have to update. We got to make it.
         userRepository.update(id, userDTO.getFirstName(),
                 userDTO.getLastName(), userDTO.getPhoneNumber(),
                 userDTO.getEmail(), userDTO.getAddress(), userDTO.getZipCode());
@@ -109,7 +114,7 @@ public void addUserAuth(AdminDTO adminDTO) throws BadRequestException {
        adminDTO.setBuiltIn(false);
 
        if(emailExists && !foundUser.get().getEmail().equals(adminDTO.getEmail())){
-           throw new ConflictException("Eror: Email is in use");
+           throw new ConflictException("Error: Email is in use");
        }
         if(adminDTO.getPassword() == null){
             adminDTO.setPassword(foundUser.get().getPassword());

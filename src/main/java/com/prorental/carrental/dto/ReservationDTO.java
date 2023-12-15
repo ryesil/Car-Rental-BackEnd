@@ -24,7 +24,7 @@ public class ReservationDTO {
 
     private LocalDateTime pickUpTime;
 
-    private LocalDateTime dropOfTime;
+    private LocalDateTime dropOffTime;
 
     private String pickUpLocation;
 
@@ -39,7 +39,7 @@ public class ReservationDTO {
         this.car = new CarDTO(reservation.getCarId());
         this.userId = reservation.getUserId().getId();
         this.pickUpTime = reservation.getPickUpTime();
-        this.dropOfTime = reservation.getDropOfTime();
+        this.dropOffTime = reservation.getDropOffTime();
         this.pickUpLocation = reservation.getPickUpLocation();
         this.dropOfLocation = reservation.getDropOfLocation();
         this.status = reservation.getStatus();

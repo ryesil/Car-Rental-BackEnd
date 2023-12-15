@@ -31,9 +31,9 @@ public class UserDTO {
     @JsonIgnore
     private String password;
 
-    @Pattern(regexp = "^((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$",
-            message = "Please enter valid phone number")
-    @Size(min = 14, max= 14, message = "Phone number should be exact 10 characters")
+//    @Pattern(regexp = "^((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$",
+//            message = "Please enter valid phone number")
+    @Size(min = 10, max= 14, message = "Phone number should be exact 10 characters")
     @NotNull(message = "Please enter your phone number")
     private String phoneNumber;
 

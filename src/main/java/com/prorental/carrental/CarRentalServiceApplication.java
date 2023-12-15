@@ -1,9 +1,8 @@
 package com.prorental.carrental;
 
-//import org.modelmapper.ModelMapper;
-//import org.modelmapper.config.Configuration;
-//import org.modelmapper.convention.NamingConventions;
-//import org.modelmapper.spi.NamingConvention;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.config.Configuration;
+import org.modelmapper.convention.NamingConventions;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;;
@@ -17,18 +16,18 @@ public class CarRentalServiceApplication {
         SpringApplication.run(CarRentalServiceApplication.class, args);
     }
 
-    //We tell spring to make an object of modelMapper and
-    // throw it into the app context to use later.
-    //We need modelMapper to convert entity class to DTO class.
-    //User DTO ya ceviriyoruz
-//    @Bean
-//    public ModelMapper modelMapper(){
-//        ModelMapper modelMapper = new ModelMapper();
-//        modelMapper.getConfiguration()// we need this to arrange access points like private, public, protected
-//                .setFieldMatchingEnabled(true)
-//                .setFieldAccessLevel(Configuration.AccessLevel.PRIVATE)// access upto private
-//                .setSourceNamingConvention(NamingConventions.JAVABEANS_MUTATOR);
-//        return modelMapper;
-//    }
+//    We tell spring to make an object of modelMapper and
+//     throw it into the app context to use later.
+//    We need modelMapper to convert entity class to DTO class.
+//    User DTO ya ceviriyoruz
+    @Bean
+    public ModelMapper modelMapper(){
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration()// we need this to arrange access points like private, public, protected
+                .setFieldMatchingEnabled(true)
+                .setFieldAccessLevel(Configuration.AccessLevel.PRIVATE)// access upto private
+                .setSourceNamingConvention(NamingConventions.JAVABEANS_MUTATOR);
+        return modelMapper;
+    }
 
 }
